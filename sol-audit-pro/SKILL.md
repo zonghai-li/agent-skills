@@ -1,5 +1,5 @@
 ---
-name: solidity-audit
+name: sol-audit-pro
 description: >
   Professional-grade Solidity smart contract security auditor. Use this skill whenever a user asks
   to audit, review, analyze, or check a Solidity smart contract or any .sol file for security issues,

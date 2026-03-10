@@ -193,7 +193,9 @@ Use the standard 4-tier system:
 
 Always output the audit in this exact structure:
 
-```
+---
+**Template:**
+
 # Smart Contract Security Audit Report
 **Contract:** [name]
 **Auditor:** AI Audit (Claude / solidity-audit skill)
@@ -266,7 +268,6 @@ function withdraw() external nonReentrant {
 - [ ] Consider Immunefi bug bounty program
 - [ ] Use timelocks for all admin operations
 - [ ] Formal verification for core invariants (Certora Prover)
-```
 
 ---
 
@@ -306,17 +307,17 @@ Tools for recon:
 
 **ALWAYS develop and test on a local fork — never on mainnet directly.**
 
+**Step 1 — Project setup:**
 ```bash
-# Foundry fork setup
 forge init exploit-poc
 cd exploit-poc
+forge install OpenZeppelin/openzeppelin-contracts
 
-# Fork mainnet at specific block
+# Start local fork (optional — or use vm.createSelectFork in test)
 anvil --fork-url $RPC_URL --fork-block-number <BLOCK>
-
-# Or in test file:
 ```
 
+**Step 2 — Write the exploit test:**
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
@@ -496,6 +497,10 @@ Balance after: 1,234,567 USDC
 - Never front-run a fix to extract funds ("white hat" claims don't hold up)
 - Never disclose publicly before fix is deployed + bounty paid
 - Keep all communication through official channels (creates paper trail)
+
+---
+
+## Phase 7: PoC Quality Standard
 
 Every Critical and High finding MUST include:
 1. **Attacker contract** in Solidity (compilable)

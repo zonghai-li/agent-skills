@@ -150,13 +150,20 @@ Work through EVERY category below. Do not skip any. Mark each as ✅ CLEAR or �
 - [ ] Unnecessary storage reads (cache in memory)
 - [ ] `public` vs `external` for functions never called internally
 
-### 2.14 NEW (2024–2025) Attack Patterns
+### 2.14 NEW (2024–2026) Attack Patterns
 - [ ] **Read-only reentrancy** (Curve, Conic Finance style): view function called externally mid-reentrant execution returns stale state
-- [ ] **Blind signing / social engineering**: multisig signers approve malicious upgrade (Bybit 2025 pattern) — check if hardware wallet policy enforces human-readable tx preview
+- [ ] **Blind signing / supply chain** (Bybit Feb 2025, $1.4B): Safe{Wallet} JS tampered via compromised dev machine — check frontend dep integrity, npm lockfiles, subresource integrity
 - [ ] **Governance flashloan** with `emergencyCommit` or equivalent same-block vote bypass
-- [ ] **Initialized flag reset on upgrade** (AllianceBlock 2024): upgrade resets `initialized = false`, allowing re-initialization
+- [ ] **Validation flag reset** (AllianceBlock 2024, Abracadabra Oct 2025): `cook()` or `initialize()` boolean guard cleared by unrelated code path — any multi-step action function with internal flags
 - [ ] **Compound V2 fork donation attack** (Sonne Finance 2024): empty market manipulation via direct token donation before first deposit
 - [ ] **Cross-chain replay**: same signature valid on multiple chains/forks
+- [ ] **Rounding amplification** (Bunni Sep 2025, $8.4M): repeated micro-withdrawals accumulate rounding errors — check `withdraw()`/`redeem()` rounding direction AND resistance to looped small calls
+- [ ] **Cross-contract reentrancy on L2** (GMX v1 Jul 2025, $42M): GLP pool callback on Arbitrum — `nonReentrant` must cover ALL cross-pool call paths, not just same-contract
+- [ ] **Legacy Solidity overflow in live integrations** (Truebit Jan 2026, $26.4M): Solidity 0.6.10 integer overflow in mint pricing — flag any pre-0.8.0 dependency in scope
+- [ ] **Inherited framework vulnerability** (SagaEVM Jan 2026, $7M): Ethermint precompile bridge bug inherited unchanged — audit upstream framework versions, not just protocol code
+- [ ] **Treasury hot wallet** (Step Finance Jan 2026, $30M): single private key controls treasury — flag any treasury not behind multisig + hardware wallet
+
+> 📋 See `references/incident-reference.md` for full 2021–2026 incident table with pattern analysis.
 
 ---
 
@@ -540,3 +547,4 @@ For deep dives on specific vulnerability classes, read:
 - `references/defi-specific.md` — AMM, lending protocol, yield aggregator specific checks
 - `references/checklist.md` — exhaustive 100+ point checklist for comprehensive coverage
 - `references/bounty-hunting.md` — recon strategy, Foundry tooling, exploit patterns, Immunefi/Sherlock submission guide
+- `references/incident-reference.md` — 2021–2026 incident quick reference table with pattern analysis and audit triggers
